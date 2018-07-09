@@ -1,0 +1,364 @@
+******************************************************************************
+                  TI ARM Linker PC v18.1.1                     
+******************************************************************************
+>> Linked Mon Jul  9 09:18:04 2018
+
+OUTPUT FILE NAME:   <msp432_TFT.out>
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00000b4d
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  MAIN                  00000000   00040000  00000ff4  0003f00c  R  X
+  INFO                  00200000   00004000  00000000  00004000  R  X
+  SRAM_CODE             01000000   00010000  00000676  0000f98a  RW X
+  SRAM_DATA             20000000   00010000  00000676  0000f98a  RW  
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+00000000    00000000    00000ff4   00000ff4    r-x
+  00000000    00000000    000000e4   000000e4    r-- .intvecs
+  000000e4    000000e4    00000c24   00000c24    r-x .text
+  00000d08    00000d08    000002ec   000002ec    r-- .cinit
+20000000    20000000    00000476   00000000    rw-
+  20000000    20000000    00000476   00000000    rw- .data
+2000fe00    2000fe00    00000200   00000000    rw-
+  2000fe00    2000fe00    00000200   00000000    rw- .stack
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.intvecs   0    00000000    000000e4     
+                  00000000    000000e4     startup_msp432p401r_ccs.obj (.intvecs:retain)
+
+.text      0    000000e4    00000c24     
+                  000000e4    00000250     tft_lib.obj (.text:printChar)
+                  00000334    0000020c     tft_lib.obj (.text:printString)
+                  00000540    00000174     tft_lib.obj (.text:ILI9481_init)
+                  000006b4    00000164     msp432p401x_TFT_3_2.obj (.text:main)
+                  00000818    000000a0     tft_lib.obj (.text:fillRect)
+                  000008b8    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.asm.obj (.text)
+                  00000954    00000078     system_msp432p401r.obj (.text:SystemInit)
+                  000009cc    0000006e     tft_lib.obj (.text:setAddrWindow)
+                  00000a3a    00000068     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  00000aa2    00000064     tft_lib.obj (.text:drawPixel)
+                  00000b06    00000002     startup_msp432p401r_ccs.obj (.text:Default_Handler)
+                  00000b08    00000044     rtsv7M4_T_le_v4SPD16_eabi.lib : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit:__TI_auto_init_nobinit_nopinit)
+                  00000b4c    00000038                                   : boot_cortex_m.c.obj (.text:_c_int00_noargs:_c_int00_noargs)
+                  00000b84    00000036     tft_lib.obj (.text:returnColor24_16)
+                  00000bba    00000002     --HOLE-- [fill = 0]
+                  00000bbc    00000024     tft_lib.obj (.text:LCD_Writ_Bus)
+                  00000be0    00000024     tft_lib.obj (.text:LCD_Write_DATA)
+                  00000c04    00000024     tft_lib.obj (.text:lcdPrintString)
+                  00000c28    00000020     tft_lib.obj (.text:Delay_5)
+                  00000c48    00000020     tft_lib.obj (.text:LCD_Write_COM)
+                  00000c68    00000020     tft_lib.obj (.text:writedata)
+                  00000c88    0000001e     tft_lib.obj (.text:fillScreen)
+                  00000ca6    00000002     --HOLE-- [fill = 0]
+                  00000ca8    0000001c     tft_lib.obj (.text:pulse)
+                  00000cc4    00000018     tft_lib.obj (.text:Write_8)
+                  00000cdc    0000000e     rtsv7M4_T_le_v4SPD16_eabi.lib : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  00000cea    0000000c     startup_msp432p401r_ccs.obj (.text:Reset_Handler)
+                  00000cf6    0000000a     tft_lib.obj (.text:lcdOn)
+                  00000d00    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  00000d04    00000004                                   : exit.c.obj (.text:abort:abort)
+
+.cinit     0    00000d08    000002ec     
+                  00000d08    000002db     (.cinit..data.load) [load image, compression = lzss]
+                  00000fe3    00000001     --HOLE-- [fill = 0]
+                  00000fe4    00000008     (__TI_handler_table)
+                  00000fec    00000008     (__TI_cinit_table)
+
+.init_array 
+*          0    00000000    00000000     UNINITIALIZED
+
+.binit     0    00000000    00000000     
+
+.data      0    20000000    00000476     UNINITIALIZED
+                  20000000    00000460     tft_lib.obj (.data:ASCII)
+                  20000460    00000016     tft_lib.obj (.data)
+
+.stack     0    2000fe00    00000200     UNINITIALIZED
+                  2000fe00    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.stack)
+                  2000fe04    000001fc     --HOLE--
+
+MODULE SUMMARY
+
+       Module                        code   ro data   rw data
+       ------                        ----   -------   -------
+    .\
+       tft_lib.obj                   2208   0         2284   
+       msp432p401x_TFT_3_2.obj       356    0         0      
+       system_msp432p401r.obj        120    0         0      
+    +--+-----------------------------+------+---------+---------+
+       Total:                        2684   0         2284   
+                                                             
+    .\ccs\
+       startup_msp432p401r_ccs.obj   14     228       0      
+    +--+-----------------------------+------+---------+---------+
+       Total:                        14     228       0      
+                                                             
+    C:\ti\ccsv8\tools\compiler\ti-cgt-arm_18.1.1.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
+       memcpy_t2.asm.obj             156    0         0      
+       copy_decompress_lzss.c.obj    104    0         0      
+       autoinit.c.obj                68     0         0      
+       boot_cortex_m.c.obj           56     0         0      
+       copy_decompress_none.c.obj    14     0         0      
+       exit.c.obj                    4      0         0      
+       pre_init.c.obj                4      0         0      
+    +--+-----------------------------+------+---------+---------+
+       Total:                        406    0         0      
+                                                             
+       Stack:                        0      0         1024   
+       Linker Generated:             0      747       0      
+    +--+-----------------------------+------+---------+---------+
+       Grand Total:                  3104   975       3308   
+
+
+LINKER GENERATED COPY TABLES
+
+__TI_cinit_table @ 00000fec records: 1, size/record: 8, table size: 8
+	.data: load addr=00000d08, load size=000002db bytes, run addr=20000000, run size=00000476 bytes, compression=lzss
+
+
+LINKER GENERATED HANDLER TABLE
+
+__TI_handler_table @ 00000fe4 records: 2, size/record: 4, table size: 8
+	index: 0, handler: __TI_decompress_lzss
+	index: 1, handler: __TI_decompress_none
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                          
+-------   ----                          
+00000b07  ADC14_IRQHandler              
+00000b07  AES256_IRQHandler             
+20000000  ASCII                         
+2000046c  Axis                          
+00000b07  BusFault_Handler              
+00000d05  C$$EXIT                       
+00000b07  COMP_E0_IRQHandler            
+00000b07  COMP_E1_IRQHandler            
+00000b07  CS_IRQHandler                 
+00000b07  DMA_ERR_IRQHandler            
+00000b07  DMA_INT0_IRQHandler           
+00000b07  DMA_INT1_IRQHandler           
+00000b07  DMA_INT2_IRQHandler           
+00000b07  DMA_INT3_IRQHandler           
+00000b07  DebugMon_Handler              
+00000b07  Default_Handler               
+00000c29  Delay_5                       
+00000b07  EUSCIA0_IRQHandler            
+00000b07  EUSCIA1_IRQHandler            
+00000b07  EUSCIA2_IRQHandler            
+00000b07  EUSCIA3_IRQHandler            
+00000b07  EUSCIB0_IRQHandler            
+00000b07  EUSCIB1_IRQHandler            
+00000b07  EUSCIB2_IRQHandler            
+00000b07  EUSCIB3_IRQHandler            
+00000b07  FLCTL_IRQHandler              
+00000b07  FPU_IRQHandler                
+00000b07  HardFault_Handler             
+00000541  ILI9481_init                  
+00000bbd  LCD_Writ_Bus                  
+00000c49  LCD_Write_COM                 
+00000be1  LCD_Write_DATA                
+00000b07  MemManage_Handler             
+00000b07  NMI_Handler                   
+00000b07  PCM_IRQHandler                
+00000b07  PORT1_IRQHandler              
+00000b07  PORT2_IRQHandler              
+00000b07  PORT3_IRQHandler              
+00000b07  PORT4_IRQHandler              
+00000b07  PORT5_IRQHandler              
+00000b07  PORT6_IRQHandler              
+00000b07  PSS_IRQHandler                
+00000b07  PendSV_Handler                
+00000b07  RTC_C_IRQHandler              
+00000ceb  Reset_Handler                 
+00000b07  SVC_Handler                   
+00000b07  SysTick_Handler               
+00000955  SystemInit                    
+00000b07  T32_INT1_IRQHandler           
+00000b07  T32_INT2_IRQHandler           
+00000b07  T32_INTC_IRQHandler           
+00000b07  TA0_0_IRQHandler              
+00000b07  TA0_N_IRQHandler              
+00000b07  TA1_0_IRQHandler              
+00000b07  TA1_N_IRQHandler              
+00000b07  TA2_0_IRQHandler              
+00000b07  TA2_N_IRQHandler              
+00000b07  TA3_0_IRQHandler              
+00000b07  TA3_N_IRQHandler              
+20000464  TFT_char                      
+20000460  TFT_line                      
+20000470  TFT_zdvig                     
+20000474  Text_color                    
+20000468  Text_size                     
+00000b07  UsageFault_Handler            
+4000480c  WDTCTL_SYM                    
+00000b07  WDT_A_IRQHandler              
+00000cc5  Write_8                       
+20010000  __STACK_END                   
+00000200  __STACK_SIZE                  
+00000fec  __TI_CINIT_Base               
+00000ff4  __TI_CINIT_Limit              
+00000fe4  __TI_Handler_Table_Base       
+00000fec  __TI_Handler_Table_Limit      
+00000b09  __TI_auto_init_nobinit_nopinit
+00000a3b  __TI_decompress_lzss          
+00000cdd  __TI_decompress_none          
+ffffffff  __TI_pprof_out_hndl           
+ffffffff  __TI_prof_data_size           
+ffffffff  __TI_prof_data_start          
+00000000  __TI_static_base__            
+000008b9  __aeabi_memcpy                
+000008b9  __aeabi_memcpy4               
+000008b9  __aeabi_memcpy8               
+ffffffff  __binit__                     
+ffffffff  __c_args__                    
+UNDEFED   __mpu_init                    
+2000fe00  __stack                       
+00000b4d  _c_int00_noargs               
+UNDEFED   _system_post_cinit            
+00000d01  _system_pre_init              
+00000d05  abort                         
+ffffffff  binit                         
+00000aa3  drawPixel                     
+00000819  fillRect                      
+00000c89  fillScreen                    
+00000000  interruptVectors              
+00000cf7  lcdOn                         
+00000c05  lcdPrintString                
+000006b5  main                          
+000008b9  memcpy                        
+000000e5  printChar                     
+00000335  printString                   
+00000ca9  pulse                         
+00000b85  returnColor24_16              
+000009cd  setAddrWindow                 
+00000c69  writedata                     
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                          
+-------   ----                          
+00000000  __TI_static_base__            
+00000000  interruptVectors              
+000000e5  printChar                     
+00000200  __STACK_SIZE                  
+00000335  printString                   
+00000541  ILI9481_init                  
+000006b5  main                          
+00000819  fillRect                      
+000008b9  __aeabi_memcpy                
+000008b9  __aeabi_memcpy4               
+000008b9  __aeabi_memcpy8               
+000008b9  memcpy                        
+00000955  SystemInit                    
+000009cd  setAddrWindow                 
+00000a3b  __TI_decompress_lzss          
+00000aa3  drawPixel                     
+00000b07  ADC14_IRQHandler              
+00000b07  AES256_IRQHandler             
+00000b07  BusFault_Handler              
+00000b07  COMP_E0_IRQHandler            
+00000b07  COMP_E1_IRQHandler            
+00000b07  CS_IRQHandler                 
+00000b07  DMA_ERR_IRQHandler            
+00000b07  DMA_INT0_IRQHandler           
+00000b07  DMA_INT1_IRQHandler           
+00000b07  DMA_INT2_IRQHandler           
+00000b07  DMA_INT3_IRQHandler           
+00000b07  DebugMon_Handler              
+00000b07  Default_Handler               
+00000b07  EUSCIA0_IRQHandler            
+00000b07  EUSCIA1_IRQHandler            
+00000b07  EUSCIA2_IRQHandler            
+00000b07  EUSCIA3_IRQHandler            
+00000b07  EUSCIB0_IRQHandler            
+00000b07  EUSCIB1_IRQHandler            
+00000b07  EUSCIB2_IRQHandler            
+00000b07  EUSCIB3_IRQHandler            
+00000b07  FLCTL_IRQHandler              
+00000b07  FPU_IRQHandler                
+00000b07  HardFault_Handler             
+00000b07  MemManage_Handler             
+00000b07  NMI_Handler                   
+00000b07  PCM_IRQHandler                
+00000b07  PORT1_IRQHandler              
+00000b07  PORT2_IRQHandler              
+00000b07  PORT3_IRQHandler              
+00000b07  PORT4_IRQHandler              
+00000b07  PORT5_IRQHandler              
+00000b07  PORT6_IRQHandler              
+00000b07  PSS_IRQHandler                
+00000b07  PendSV_Handler                
+00000b07  RTC_C_IRQHandler              
+00000b07  SVC_Handler                   
+00000b07  SysTick_Handler               
+00000b07  T32_INT1_IRQHandler           
+00000b07  T32_INT2_IRQHandler           
+00000b07  T32_INTC_IRQHandler           
+00000b07  TA0_0_IRQHandler              
+00000b07  TA0_N_IRQHandler              
+00000b07  TA1_0_IRQHandler              
+00000b07  TA1_N_IRQHandler              
+00000b07  TA2_0_IRQHandler              
+00000b07  TA2_N_IRQHandler              
+00000b07  TA3_0_IRQHandler              
+00000b07  TA3_N_IRQHandler              
+00000b07  UsageFault_Handler            
+00000b07  WDT_A_IRQHandler              
+00000b09  __TI_auto_init_nobinit_nopinit
+00000b4d  _c_int00_noargs               
+00000b85  returnColor24_16              
+00000bbd  LCD_Writ_Bus                  
+00000be1  LCD_Write_DATA                
+00000c05  lcdPrintString                
+00000c29  Delay_5                       
+00000c49  LCD_Write_COM                 
+00000c69  writedata                     
+00000c89  fillScreen                    
+00000ca9  pulse                         
+00000cc5  Write_8                       
+00000cdd  __TI_decompress_none          
+00000ceb  Reset_Handler                 
+00000cf7  lcdOn                         
+00000d01  _system_pre_init              
+00000d05  C$$EXIT                       
+00000d05  abort                         
+00000fe4  __TI_Handler_Table_Base       
+00000fec  __TI_CINIT_Base               
+00000fec  __TI_Handler_Table_Limit      
+00000ff4  __TI_CINIT_Limit              
+20000000  ASCII                         
+20000460  TFT_line                      
+20000464  TFT_char                      
+20000468  Text_size                     
+2000046c  Axis                          
+20000470  TFT_zdvig                     
+20000474  Text_color                    
+2000fe00  __stack                       
+20010000  __STACK_END                   
+4000480c  WDTCTL_SYM                    
+ffffffff  __TI_pprof_out_hndl           
+ffffffff  __TI_prof_data_size           
+ffffffff  __TI_prof_data_start          
+ffffffff  __binit__                     
+ffffffff  __c_args__                    
+ffffffff  binit                         
+UNDEFED   __mpu_init                    
+UNDEFED   _system_post_cinit            
+
+[107 symbols]
