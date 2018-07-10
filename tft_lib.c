@@ -1,19 +1,15 @@
 #include "ti/devices/msp432p4xx/inc/msp.h"
 #include <stdint.h>
 #include <tft_lib.h>
+#include "registers.h"
+#include "pins.h"
 
 volatile uint32_t i;
 
-#define TFTWIDTH  319
-#define TFTHEIGHT 479
-
-#define TFTLCD_CS    0x10;
-#define TFTLCD_RST   0x20;
-#define TFTLCD_RS    0x40;
-#define TFTLCD_WR    0x80;
-
 int TFT_line = 0, TFT_char = 0, Text_size = 0, Axis = 0, TFT_zdvig = 0;
 uint16_t Text_color = 0;
+uint16_t TFTWIDTH;
+uint16_t TFTHEIGHT;
 
 extern unsigned char ASCII[][5] = {
       {0x00, 0x00, 0x00, 0x00, 0x00} // 0x20       0
@@ -269,6 +265,20 @@ extern void writedata (DATA) {
     pulse();
 }
 
+//extern void writeRegister24 (uint8_t r, uint32_t d) {
+//    P2->OUT &= ~TFTLCD_CS;
+//    P2->OUT &= ~TFTLCD_RS;
+//    Write_8 (r);
+//    P2->OUT |= TFTLCD_RS;
+//    Delay_5(10);
+//    Write_8 (d>>16);
+//    Delay_5(10);
+//    Write_8 (d>>8);
+//    Delay_5(10);
+//    Write_8 (d);
+//    P2->OUT |= TFTLCD_CS;
+//}
+
 //Init DISPLAY
 extern void ILI9481_init(){
     P2->OUT |= TFTLCD_WR;
@@ -366,7 +376,7 @@ extern void fillRect (int x1, int y1, int x2, int y2, uint16_t color) {
     // TFTLCD_RS = 1;
     P2->OUT |= TFTLCD_RS;
     LCD_Writ_Bus(color>>8, color);
-    //  i=(x2-x1)*(y2-y1);
+//      i=(x2-x1)*(y2-y1);
     i = 21729;
     while (i!=0) {
         i--;
@@ -382,17 +392,17 @@ extern void fillRect (int x1, int y1, int x2, int y2, uint16_t color) {
 }
 
 extern void setAddrWindow (uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
-    LCD_Write_COM(0x2a);
+    LCD_Write_COM(0x2A);
     writedata(x0>>8);
     writedata(x0);
     writedata(x1>>8);
     writedata(x1);
-    LCD_Write_COM(0x2b);
+    LCD_Write_COM(0x2B);
     writedata(y0>>8);
     writedata(y0);
     writedata(y1>>8);
     writedata(y1);
-    LCD_Write_COM(0x2c);
+    LCD_Write_COM(0x2C);
 }
 
 extern void drawPixel (int16_t x, int16_t y, uint16_t color) {
@@ -552,6 +562,65 @@ extern uint16_t returnColor24_16 (R , G , B) {
 extern void Delay_5(S) {
     int  t;
     for (t = S; t > 0; t--);
+}
+
+extern void setRotation(int rotation, int id){
+    uint16_t t;
+
+    switch (id) {
+        case 9341:
+            switch (rotation) {
+                case 2:
+                    t = ILI9341_MADCTL_MX | ILI9341_MADCTL_BGR;
+                    break;
+                case 3:
+                    t = ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR;
+                    break;
+                case 0:
+                    t = ILI9341_MADCTL_MY | ILI9341_MADCTL_BGR;
+                    break;
+                case 1:
+                    t = ILI9341_MADCTL_MX | ILI9341_MADCTL_MY | ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR;
+                    break;
+            }
+            LCD_Write_COM(ILI9341_MADCTL);
+            writedata(t); // MADCTL
+            // For 9341, init default full-screen address window:
+            setAddrWindow(0, 0, TFTWIDTH - 1, TFTHEIGHT - 1); // CS_IDLE happens here
+//
+//        case 8357:
+//            switch (rotation) {
+//                case 2:
+//                    t = HX8357B_MADCTL_RGB;
+//                    break;
+//                case 3:
+//                    t = HX8357B_MADCTL_MX | HX8357B_MADCTL_MV | HX8357B_MADCTL_RGB;
+//                    break;
+//                case 0:
+//                    t = HX8357B_MADCTL_MX | HX8357B_MADCTL_MY | HX8357B_MADCTL_RGB;
+//                    break;
+//                case 1:
+//                    t = HX8357B_MADCTL_MY | HX8357B_MADCTL_MV | HX8357B_MADCTL_RGB;
+//                    break;
+//            }
+//            LCD_Write_COM(ILI9341_MADCTL);
+//            writedata(t); // MADCTL
+//            // For 8357, init default full-screen address window:
+//            setAddrWindow(0, 0, TFTWIDTH, TFTHEIGHT); // CS_IDLE happens here
+    }
+}
+
+extern void orientation (int or) {
+    switch (or) {
+    case 0:
+        TFTWIDTH = 319;
+        TFTHEIGHT = 479;
+        break;
+    case 1:
+        TFTWIDTH = 479;
+        TFTHEIGHT = 319;
+        break;
+    }
 }
 
 extern void lcdOff() {
@@ -740,12 +809,83 @@ extern void drawLine (int x1, int y1, int x2, int y2, uint16_t color) {
 
                 if (t >= 0) {
                     row += ystep;
-                    t   -= dx;
+                    t -= dx;
                 }
             }
         }
     }
 }
+
+//uint16_t readId (void) {
+//    uint8_t hi, lo;
+//
+//    if (readReg(0x04) == 0x8000) {
+//        writeRegister24(HX8357D_SETC, 0xFF8357);
+//        Delay_5(150);
+//        //Serial.println(readReg(0xD0), HEX);
+//        if (readReg(0xD0) == 0x990000) {
+//          return 0x8357;
+//        }
+//      }
+//
+//      uint16_t id = readReg(0xD3);
+//      if (id == 0x9341) {
+//        return id;
+//      }
+//
+//      P2->OUT &= ~TFTLCD_CS;
+//      P2->OUT &= ~TFTLCD_RS;
+//      writedata (0x00);
+//      pulse();
+//
+//      P6->DIR &= ~0xFF;                                   //set port 6 as input
+//      P5->DIR &= ~0xFF;                                   //set port 5 as input
+//
+//      P2->OUT |= TFTLCD_RS;
+//      //read
+//      //read
+//
+//      P6->DIR |= 0xFF;                                    //set port 6 as output
+//      P5->DIR |= 0xFF;                                    //set port 6 as output
+//
+//      P2->OUT |= TFTLCD_CS;
+//
+//      id = hi;
+//      id <<= 8;
+//      id |= lo;
+//
+//      return id;
+//}
+
+//uint32_t readReg (uint8_t r) {
+//    uint32_t id;
+//    uint8_t x;
+//
+//    P2->OUT &= ~TFTLCD_CS;
+//    P2->OUT &= ~TFTLCD_RS;
+//    writedata (r);
+//
+//    P6->DIR &= ~0xFF;                                   //set port 6 as input
+//    P5->DIR &= ~0xFF;                                   //set port 5 as input
+//
+//    P2->OUT |= TFTLCD_RS;
+//    Delay_5(50);
+//    //read
+//    id = x;
+//    id <<= 8;
+//    //read
+//    id |= x;
+//    id <<= 8;
+//    //read
+//    id |= x;
+//    id <<= 8;
+//    //read
+//    id |= x;
+//    P2->OUT |= TFTLCD_CS;
+//
+//    P6->DIR |= 0xFF;                                    //set port 6 as output
+//    P5->DIR |= 0xFF;                                    //set port 6 as output
+//}
 
 extern void blink () {
 //    P2->DIR |= TFTLCD_RST;

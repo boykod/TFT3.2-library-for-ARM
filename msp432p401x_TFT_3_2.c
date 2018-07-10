@@ -35,18 +35,22 @@ int main(void) {
     P5->OUT |= 0xff;
     P5->DIR |= 0xff;                        // Configure P5  as output
 
+    // orientation 0 - vertical, 1 - horizontal
+    orientation (1);
     ILI9481_init();
-    fillScreen(78);
+    // 0,2 - vertical, 1,3 - horizontal
+    setRotation(3, 9341);
+    fillScreen(127);
 
     Axis = 1;
     Text_color = returnColor24_16(0, 237, 237);
     Text_size = 3;
     TFT_line=150;
-    TFT_char=75;
-    fillRect(30, 118, 290, 280,0xffab);
-    fillRect(40, 128, 280, 270,0xab);
+    TFT_char=180;
+//    fillRect(30, 118, 290, 280,0xffab);
+//    fillRect(40, 128, 280, 270,0xab);
 
-    lcdPrintString(" Hello, world !!! ");
+    lcdPrintString(" MSP432 ");
 
     while(1) {
 
