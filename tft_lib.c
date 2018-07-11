@@ -348,7 +348,7 @@ extern void ILI9481_init(){
     writedata(0xE0);
     Delay_5(120);
     lcdOn();
-    fillScreen(0x00); //Clear Screen
+//    fillScreen(0x00); //Clear Screen
 }
 
 extern void fillScreen (uint16_t color) {
@@ -471,6 +471,24 @@ extern void printChar (unsigned char _char ,int16_t x, int16_t y, int16_t color)
         i += Text_size + 1;
         if (_char & 0x80)
             for (T = Text_size; T >=0 ;T--) drawPixel(y, x+i+T, color);
+    } else {
+        //  x=320-x;
+        y=TFTHEIGHT-y;
+        if (_char & 0x01) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
+        i +=Text_size+1;
+        if (_char & 0x02) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
+        i +=Text_size+1;
+        if (_char & 0x04) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
+        i +=Text_size+1;
+        if (_char & 0x08) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
+        i +=Text_size+1;
+        if (_char & 0x10) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
+        i +=Text_size+1;
+        if (_char & 0x20) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
+        i +=Text_size+1;
+        if (_char & 0x40) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
+        i +=Text_size+1;
+        if (_char & 0x80) for (T = Text_size; T >=0 ;T--)drawPixel(x+i+T, y, color);
     }
 }
 

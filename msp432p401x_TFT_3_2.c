@@ -40,17 +40,28 @@ int main(void) {
     ILI9481_init();
     // 0,2 - vertical, 1,3 - horizontal
     setRotation(3, 9341);
+//    fillScreen(0x00);
     fillScreen(127);
 
     Axis = 1;
     Text_color = returnColor24_16(0, 237, 237);
-    Text_size = 3;
+    Text_size = 2;
     TFT_line=150;
     TFT_char=180;
 //    fillRect(30, 118, 290, 280,0xffab);
 //    fillRect(40, 128, 280, 270,0xab);
 
-    lcdPrintString(" MSP432 ");
+    lcdPrintString(" Axis = 1 ");
+
+    Axis = 0;
+    Text_color = returnColor24_16(0, 237, 237);
+    Text_size = 2;
+    TFT_line=150;
+    TFT_char=180;
+    //    fillRect(30, 118, 290, 280,0xffab);
+    //    fillRect(40, 128, 280, 270,0xab);
+
+    lcdPrintString(" Axis = 0 ");
 
     while(1) {
 
