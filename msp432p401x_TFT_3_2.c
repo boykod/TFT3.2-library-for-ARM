@@ -16,6 +16,7 @@
 #include "ti/devices/msp432p4xx/inc/msp.h"
 #include <stdint.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "tft_lib.h"
 
 void setData ();
@@ -28,6 +29,7 @@ int main(void) {
 
     char buffer [80];
     unsigned char new;
+    unsigned char k = 2;
 
     WDT_A->CTL = WDT_A_CTL_PW |             // Stop WDT
             WDT_A_CTL_HOLD;
@@ -77,15 +79,17 @@ int main(void) {
     ILI9481_init();
     // 0,2 - vertical, 1,3 - horizontal
     setRotation(2, 9341);
-    fillScreen(0x00);
+    fillScreen(0xffab);
+    fillRect(15, 15, 304, 464,0x00);
 
     setText();
 
     while(1) {
         if (EUSCI_A0->IFG & EUSCI_A_IFG_RXIFG) {                            // Check if the message is came
+
             clear ();
 
-            sprintf (buffer, "%d\n", new);
+            sprintf (buffer, "%d", new);
             lcdPrintString(buffer);
 
             new = EUSCI_A0->RXBUF;                                       // Set message from buffer to RXData
@@ -102,8 +106,8 @@ void setText () {
     Axis = 1;
     Text_color = returnColor24_16(0, 237, 237);
     Text_size = 2;
-    TFT_line=2;
-    TFT_char=2;
+    TFT_line = 20;
+    TFT_char = 20;
     lcdPrintString("Data:");
 }
 
@@ -111,14 +115,14 @@ void setData () {
     Axis = 1;
     Text_color = returnColor24_16(0, 237, 237);
     Text_size = 2;
-    TFT_line=2;
-    TFT_char=70;
+    TFT_line = 20;
+    TFT_char=90;
 }
 
 void clear () {
     Axis = 1;
     Text_color = returnColor24_16(0, 0, 0);
     Text_size = 2;
-    TFT_line=2;
-    TFT_char=70;
+    TFT_line=20;
+    TFT_char=90;
 }
